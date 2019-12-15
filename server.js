@@ -5,7 +5,7 @@ const server = express();
 server.use("/api/user", userRouter);
 
 server.use(express.json());
-
+server.use("/api/user", userRouter);
 server.use(logger);
 
 //custom middleware
