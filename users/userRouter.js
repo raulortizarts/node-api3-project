@@ -4,7 +4,21 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
   // do your magic!
+  const newUser = {
+    name: req.body.name
+  };
+  user
+    .insert(newUser)
+    .then(data => {
+      return res.status(201).send(newUser);
+    })
+    .catch(error => {
+      res.status(500).json({
+        errorMessage: "error"
+      });
+    });
 });
+
 
 router.post('/:id/posts', (req, res) => {
   // do your magic!
@@ -45,6 +59,22 @@ router.get('/:id/posts', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // do your magic!
+  const id = req.params.id;
+  user.getById(id).then(data => {
+    if (!data) {
+      return res.status(404).json({ message: "Not exist" });
+    }
+  });
+  user
+    .remove(id)
+    .then(data => {
+      if (data) {
+        res.status(200).json({ message: "Deleted" });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: "Not removed" });
+    });
 });
 
 router.put('/:id', (req, res) => {
