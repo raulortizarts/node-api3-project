@@ -12,10 +12,31 @@ router.post('/:id/posts', (req, res) => {
 
 router.get('/', (req, res) => {
   // do your magic!
-});
+    user
+      .get()
+      .then(users => {
+        res.status(200).json(users);
+      })
+      .catch(err => {
+        res.status(500).json("Error");
+      });
+  });
 
 router.get('/:id', (req, res) => {
   // do your magic!
+  const id = req.params.id;
+  user
+    .getById(id)
+    .then(data => {
+      if (!data) {
+        return res.status(400).json("Not found");
+      } else {
+        return res.status(200).send(data);
+      }
+    })
+    .catch(err => {
+      res.status(500).json("error");
+    });
 });
 
 router.get('/:id/posts', (req, res) => {
